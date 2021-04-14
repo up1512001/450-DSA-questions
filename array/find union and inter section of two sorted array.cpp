@@ -40,13 +40,27 @@ void i(ll a1[],ll a2[],ll n,ll m){
         }
     }
 }
-mp.clear();
+
 // using map union of two sorted or unsorted array O(n+m)
 void uni(ll a1[],ll a2[],ll n,ll m){
-    for(ll i=0;i<n;i++){ mp.insert(a1[i],i);}
-    for(ll i=0;i<m;i++){ mp.insert(a2[i],i);}
-    for(auto itr=mp.begin();itr!=mp.end();itr++){
+    for(ll i=0;i<n;i++){ mp.insert({a1[i],i});}
+    for(ll i=0;i<m;i++){ mp.insert({a2[i],i});}
+    for(map<ll,ll>::iterator itr=mp.begin();itr!=mp.end();++itr){
         cout<<itr->first<<" ";
+        //itr->second<<" "
+       // ;
+    }
+    cout<<endl;
+}
+// intersection of two sorted array
+map<ll,ll> in;
+void inter(ll a1[],ll a2[],ll n,ll m){
+    for(ll i=0;i<n;i++){ in.insert({a1[i],i});}
+    for(ll i=0;i<m;i++){ in.insert({a2[i],i});}
+    for(map<ll,ll>::iterator itr=in.begin();itr!=in.end() && itr->second >=2;++itr){
+        cout<<itr->first<<" ";
+        //itr->second<<" "
+       // ;
     }
     cout<<endl;
 }
@@ -69,7 +83,7 @@ int main(){
    */
    // map<int,int> ans;
     uni(arr1,arr2,n,m);
-
+    inter(arr1,arr2,n,m);
 
     cout<<endl;
 }
