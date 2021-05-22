@@ -48,8 +48,30 @@ float median1(v<v<int>> arr){
     return -1;
 }
 
-
-
+// time O(32 * R * log(C)) space O(1)
+float binaryMedian(v<v<int>> arr){
+    int min=INT_MAX,max=INT_MIN;
+    for(int i=0;i<arr.size();i++){
+        if(min>arr[i][0]) min=arr[i][0];
+        if(max<arr[i][arr[i].size()-1]) max=arr[i][arr[i].size()-1];
+    }
+    cout<<"Min:"<<min<<" Max:"<<max<<"\n";
+    int desired = (arr.size()*arr[0].size()+1)/2;
+    while(min<max){
+        int mid = min + (max-min)/2;
+        int place = 0;
+        for(int i=0;i<arr.size();i++){
+            // upper_bound will also include mid value also
+            place+=upper_bound(arr[i].begin(),arr[i].end(),mid)-arr[i].begin();
+        }
+        if(place < desired){
+            min=mid+1;
+        }else{
+            max=mid;
+        }
+    }
+    return min;
+}
 int main(){
     v<v<int>> arr;
     cout<<"Enter Row And Column Size :\n";
@@ -63,5 +85,5 @@ int main(){
         }
         arr.pb(t);
     }
-    cout<<"Median Of Arr :"<<median1(arr)<<"\n";
+    cout<<"Median Of Arr :"<<binaryMedian(arr)<<"\n";
 }
