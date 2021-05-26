@@ -2,6 +2,10 @@
 using namespace std;
 #define v vector
 #define pb push_back
+#define pii pair<int,int>
+#define vii v<pii>
+#define ff first
+#define ss second
 
 // time complexity will be O(R * C) and space will be O(R*C)
 v<int> sortMatrix(v<v<int>> arr){
@@ -69,6 +73,32 @@ void printSorted(v<v<int>>& arr){
     //ret.pb(retValue(arr));
 }
 // **********************************************************************
+
+// Using MinHeap complexity will be O(N * Log (K)) and space is O(K)
+// N is count of all elements
+v<int> ansCal(v<v<int>> & arr){
+    int k = arr.size();
+    v<int> idx(k,0);
+    priority_queue<pii,vector<pii>,greater<pii>> pq;
+    for(int i=0;i<k;i++){
+        pq.push({arr[i][0],i});
+    }
+    v<int> ans;
+    while(!pq.empty()){
+        pii x = pq.top();
+        pq.pop();
+
+        ans.pb(x.ff);
+
+        if(idx[x.ss]+1 < arr[x.ss].size()){
+            pq.push({arr[x.ss][idx[x.ss]+1],x.ss});
+        }
+        idx[x.ss]++;
+
+    }
+    return ans;
+}
+
 int main(){
     v<v<int>> arr;
     cout<<"Enter Number of Raws and Columns of row-column sorted matrix:\n";
@@ -82,10 +112,10 @@ int main(){
         }
         arr.pb(temp);
     }
-    printSorted(arr);
-    //v<int> ans = printSorted(arr);
-    //cout<<"Sorted Array\n";
-    //for(int i=0;i<ans.size();i++){
-      //  cout<<ans[i]<<" ";
-    //}
+    //printSorted(arr);
+    v<int> ans = ansCal(arr);
+    cout<<"Sorted Array\n";
+    for(int i=0;i<ans.size();i++){
+        cout<<ans[i]<<" ";
+    }
 }
