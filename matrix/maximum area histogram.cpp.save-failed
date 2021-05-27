@@ -1,0 +1,95 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define v vector
+#define pb push_back
+#define s stack
+#define p pair
+// NSL (nearest smaller to left)
+void print(v<int> &arr);
+v<int> NSL(v<int> &arr){
+    v<int> left;
+    s<p<int,int>> s;
+    int sudoind=-1;
+    for(int i=0;i<arr.size();i++){
+        if(s.size()==0){
+            left.pb(sudoind);
+        }else if(s.size()>0 && s.top().first < arr[i]){
+            left.pb(s.top().second);
+        }else if(s.size() > 0 && s.top().first >= arr[i]){
+            while(s.size()>0 && s.top().first >= arr[i]){
+                s.pop();
+            }
+            if(s.size()==0){
+                left.pb(sudoind);
+            }else{
+                left.pb(s.top().second);
+            }
+        }else{
+            left.pb(s.top().second);
+        }
+        s.push({arr[i],i});
+    }
+    print(left);
+    return left;
+}
+// NSR (nearest smaller to right)
+v<int> NSR(v<int>& arr){
+    v<int> right;
+    s<p<int,int>> s;
+    int sudoind=arr.size();
+    for(int i=arr.size()-1;i>=0;i--){
+        if(s.size()==0){
+            right.pb(sudoind);
+        }else if(s.size()>0 && s.top().first < arr[i]){
+            right.pb(s.top().second);
+        }else if(s.size() > 0 && s.top().first >= arr[i]){
+            while(s.size()>0 && s.top().first >= arr[i]){
+                s.pop();
+            }
+            if(s.size()==0){
+                right.pb(sudoind);
+            }else{
+                right.pb(s.top().second);
+            }
+        }else{
+            right.pb(s.top().second);
+        }
+        s.push({arr[i],i});
+    }
+    print(right);
+    return right;
+}
+int MAH(v<int> &arr){
+    v<int> left = NSL(arr);
+    v<int> right = NSR(arr);
+    reverse(begin(right),end(right));
+    v<int> width(arr.size());
+    for(int i=0;i<width.size();i++){
+        width[i]=right[i]-left[i]-1;
+    }
+    int mx=INT_MIN;
+    //print(left);
+    //print(right);
+    print(width);
+    for(int i=0;i<arr.size();i++){
+        mx = max(mx,width[i]*arr[i]);
+    }
+    return mx;
+}
+void print(v<int> &arr){
+    cout<<"\nPrinting Vector:";
+    for(int i=0;i<arr.size();i++){
+        cout<<arr[i]<<" ";
+    }
+    cout<<"\n";
+}
+int main(){
+    cout<<"Enter size of Hight Array:\n";
+    int n;cin>>n;
+    v<int> arr(n,0);
+    cout<<"Enter Array:\n";
+    for(int i=0;i<n;i++){
+        cin>>arr[i];
+    }
+    cout<<"Maximum Area Histogram is :"<<MAH(arr);
+}
