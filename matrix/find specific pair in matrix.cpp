@@ -37,6 +37,43 @@ void print(v<v<int>> &a){
     }
     cout<<"\n";
 }
+
+// O(N^2) time complexity O(R * C) space complexity (this is implementation based solution)
+int OptimizerON2(v<v<int>> &arr){
+    v<v<int>> temp(arr.size(),v<int>(arr[0].size(),0));
+    int n=arr.size();
+    int m=arr[0].size();
+    int maxValue = INT_MIN;
+    temp[n-1][m-1]= arr[n-1][m-1];
+    // initializing last row
+    int maxv = arr[n-1][m-1];
+    for(int j=m-2;j>=0;j--){
+        if(arr[n-1][j] > maxv){
+            maxv=arr[n-1][j];
+        }
+        temp[n-1][j] = maxv;
+    }
+    // initializing last column
+    maxv = arr[n-1][m-1];
+    for(int i=n-2;i>=0;i--){
+        if(arr[i][m-1] > maxv){
+            maxv = arr[i][m-1];
+        }
+        temp[i][m-1] = maxv;
+    }
+    // preprocessing from bottom of temp matrix
+    for(int i=n-2;i>=0;i--){
+        for(int j=m-2;j>=0;j--){
+            if((temp[i+1][j+1]-arr[i][j]) > maxValue){
+                maxValue = temp[i+1][j+1]-arr[i][j];
+            }
+            temp[i][j] = max(arr[i][j],max(temp[i][j+1],temp[i+1][j]));
+        }
+    }
+    return maxValue;
+}
+
+
 int main(){
     cout<<"Enter Matrix Row and Column Size:\n";
     int r,c;cin>>r>>c;
@@ -51,5 +88,6 @@ int main(){
         mat.pb(t);
     }
     print(mat);
-    cout<<"Pair value is :"<<bruteForcePairValue(mat);
+    //cout<<"Pair value is :"<<bruteForcePairValue(mat);
+    cout<<"Pair value is :"<<OptimizerON2(mat);
 }
