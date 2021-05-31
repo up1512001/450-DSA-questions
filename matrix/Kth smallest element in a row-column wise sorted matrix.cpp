@@ -60,6 +60,36 @@ int minHeapUsing(v<v<int>> &arr,int k){
 }
 */
 
+// this priority queue will not count duplicate value as separate values
+int UsingPriorityQueue(v<v<int>> &arr,int k){
+    priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
+    for(int i=0;i<arr.size();i++){
+        pq.push({arr[i][0],i});
+    }
+    v<int> idx(k,0);
+    set<int> s;
+    while(!pq.empty()){
+        pair<int,int> x = pq.top();
+        pq.pop();
+        if(s.empty()){
+            s.insert(x.first);
+            k--;
+        }else if(s.find(x.first) == s.end()){
+           // cout<<"Hello..."<<"\n";
+            s.insert(x.first);
+            k--;
+        }
+        //k--;
+        if(k==0) return x.first;
+        if(idx[x.second]+1 < arr[x.second].size()){
+            pq.push({arr[x.second][idx[x.second]+1],x.second});
+        }
+        idx[x.second]++;
+    }
+    return 0;
+}
+
+
 int main(){
     v<v<int>> arr;
     cout<<"Enter Row and Column size:\n";
@@ -76,5 +106,5 @@ int main(){
     cout<<"Enter K Value :";
     int k;cin>>k;
     //cout<<"K th Smallest Element :"<<usingSet(arr,k);
-    cout<<"K th Smallest Element :"<<minHeapUsing(arr,k);
+    cout<<"K th Smallest Element :"<<UsingPriorityQueue(arr,k);
 }
