@@ -4,10 +4,10 @@ using namespace std;
 #define pb push_back
 
 
-void print(v<v<int>> &dp,int n,int w){
+void print(v<v<int>> &dp){
     cout<<"\nPrinting DP Table:\n";
-    for(int i=0;i<=n;i++){
-        for(int j=0;j<=w;j++){
+    for(int i=0;i<dp.size();i++){
+        for(int j=0;j<dp[i].size();j++){
             cout<<dp[i][j]<<" ";
         }
         cout<<"\n";
@@ -17,13 +17,16 @@ void print(v<v<int>> &dp,int n,int w){
 
 // real dp
 int realDP(v<int>&we,v<int>&val,int n,int w){
-    v<v<int>> dp(n+5,v<int>(w+5,-1));
+    v<v<int>> dp(n+1,v<int>(w+1,-1));
+//    memset(dp,0,sizeof(dp));
+    cout<<"DP size raw: "<<dp.size()<<" column :"<<dp[0].size()<<"\n";
     for(int i=0;i<=n;i++){
         dp[i][0] = 0;
     }
     for(int i=0;i<=w;i++){
         dp[0][i] = 0;
     }
+    print(dp);
     for(int i=1;i<=n;i++){
         for(int j=1;j<=w;j++){
             if(we[i-1] <= j){
@@ -33,6 +36,7 @@ int realDP(v<int>&we,v<int>&val,int n,int w){
             }
         }
     }
+    print(dp);
     return dp[n][w];
 }
 
@@ -56,7 +60,7 @@ int main(){
     int w;cin>>w;
 
 //    memset(dp,-1,sizeof(dp));
-    cout<<"Maximum Profit : "<<realDP(we,val,w,n);
+    cout<<"Maximum Profit : "<<realDP(we,val,n,w);
     //print(dp,n,w);
 }
 
